@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>啵啵奶茶工坊 · 手作你的快乐</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FBF3E0; --card:#FFFDF4; --ink:#4E3B2F; --ink2:#7A6A5B;
+  --sun:#FFD166; --mint:#6FD3A0; --sky:#7CC9F2; --pink:#FF9EC4; --grape:#B7A0E8;
+  --peach:#FFB084; --rose:#FF7A5C; --red:#F2573A; --green:#1FA05E; --cream:#FFF3DC;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background-color:var(--paper);
+  background-image:radial-gradient(rgba(199,171,120,.22) 1.4px,transparent 1.6px);
+  background-size:26px 26px;
+  color:var(--ink);
+  font-family:'ZCOOL KuaiLe','Kalam','PingFang SC','Microsoft YaHei',cursive;
+  padding-bottom:56px;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:#FFE28A}
+.wrap{max-width:1000px;margin:0 auto;padding:0 12px}
+.narrow{max-width:660px;margin:0 auto}
+/* ---------- header ---------- */
+header.top{position:sticky;top:0;z-index:30;background:rgba(251,243,224,.9);backdrop-filter:blur(6px);border-bottom:3px dashed rgba(78,59,47,.18)}
+.top-in{max-width:1000px;margin:0 auto;padding:10px 14px 8px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:8px;font-size:22px;white-space:nowrap}
+.brand .logo{width:38px;height:38px;background:var(--sun);border:3px solid var(--ink);border-radius:38% 62% 55% 45%/50% 45% 55% 50%;display:flex;align-items:center;justify-content:center;transform:rotate(-6deg);box-shadow:2px 3px 0 rgba(78,59,47,.2);font-size:20px}
+.brand small{display:block;font-size:11px;color:var(--ink2);transform:rotate(-1deg)}
+.main-nav{display:flex;gap:7px;margin-left:auto}
+.nav-btn{font-family:inherit;font-size:14px;border:2.5px solid var(--ink);background:rgba(255,255,255,.7);color:var(--ink);padding:6px 12px;border-radius:999px;box-shadow:2px 2px 0 rgba(78,59,47,.16);cursor:pointer}
+.nav-btn.on{background:var(--ink);color:var(--paper);transform:rotate(-1deg)}
+/* ---------- page & card ---------- */
+.page{display:none;animation:pop .25s ease}
+.page.on{display:block}
+@keyframes pop{from{opacity:0;transform:translateY(8px) rotate(.4deg)}to{opacity:1;transform:none}}
+.card{position:relative;background:var(--card);border:3px solid var(--ink);border-radius:14px 22px 14px 20px/22px 14px 20px 14px;box-shadow:4px 5px 0 rgba(78,59,47,.15);padding:16px;margin:14px 0}
+.tape{position:absolute;top:-12px;left:50%;transform:translateX(-50%) rotate(-2deg);width:86px;height:22px;background:repeating-linear-gradient(45deg,rgba(255,255,255,.55) 0 6px,rgba(255,255,255,.15) 6px 12px),var(--sun);border-left:2px dashed rgba(0,0,0,.12);border-right:2px dashed rgba(0,0,0,.12);border-radius:2px;opacity:.92;pointer-events:none}
+h3.sec{position:relative;display:inline-block;margin:18px 4px 6px;font-size:19px;letter-spacing:1px}
+h3.sec::after{content:'';position:absolute;left:2px;bottom:-3px;height:7px;width:88%;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='8' viewBox='0 0 80 8'><path d='M2 5 Q 12 1 22 5 T 42 5 T 62 5 T 82 5' fill='none' stroke='%23FFB084' stroke-width='3' stroke-linecap='round'/></svg>") no-repeat center/100% 100%;opacity:.9}
+.muted{color:var(--ink2)}
+.tiny{font-size:12px;color:var(--ink2)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.gap6{gap:6px}
+/* ---------- buttons ---------- */
+.btn{font-family:inherit;font-size:15px;cursor:pointer;border:3px solid var(--ink);background:#fff;color:var(--ink);padding:8px 16px;border-radius:999px;box-shadow:0 4px 0 rgba(78,59,47,.28);transition:transform .07s,box-shadow .07s;display:inline-flex;align-items:center;gap:6px}
+.btn:active{transform:translateY(3px);box-shadow:none}
+.btn.sun{background:var(--sun)}
+.btn.mint{background:var(--mint)}
+.btn.sky{background:var(--sky)}
+.btn.pink{background:var(--pink)}
+.btn.grape{background:var(--grape)}
+.btn.small{padding:4px 10px;font-size:13px;box-shadow:0 3px 0 rgba(78,59,47,.25)}
+/* ---------- modal ---------- */
+.ov{position:fixed;inset:0;z-index:60;background:rgba(70,52,40,.42);backdrop-filter:blur(2px);display:none;align-items:center;justify-content:center;padding:14px}
+.ov.on{display:flex}
+.sheet{
+  width:min(460px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:var(--paper);
+  border:3.5px solid var(--ink);
+  border-radius:16px 30px 16px 28px/26px 16px 30px 16px;
+  box-shadow:7px 8px 0 rgba(0,0,0,.18);
+  padding:20px;
+  animation:up .22s ease;
+  word-break:break-word;
+  overflow-wrap:break-word;
+}
+@keyframes up{from{opacity:0;transform:translateY(24px) scale(.96)}to{opacity:1;transform:none}}
+.sheet h3{margin:0 0 4px;font-size:21px;text-align:center}
+.sheetBtns{display:flex;gap:10px;margin-top:18px;justify-content:flex-end;flex-wrap:wrap}
+/* ---------- game ---------- */
+.gGrid{display:grid;grid-template-columns:minmax(0,430px) 1fr;gap:16px;align-items:start}
+.stage{position:relative;background:linear-gradient(180deg,#DFF3FF 0%,#DFF3FF 55%,#FFF1D6 100%);border:3px solid var(--ink);border-radius:18px 26px 18px 24px/24px 18px 26px 18px;box-shadow:4px 5px 0 rgba(78,59,47,.15);padding:10px;text-align:center;overflow:hidden;cursor:pointer;transition:transform .1s}
+.stage:active{transform:scale(.98)}
+.stage .cloud{position:absolute;font-size:26px;opacity:.5;animation:drift 9s linear infinite}
+.stage .cloud.c2{top:8px;right:14px;animation-duration:12s;animation-delay:2s}
+@keyframes drift{from{transform:translateX(-6px)}50%{transform:translateX(8px)}to{transform:translateX(-6px)}}
+.stage svg.cup{width:100%;max-width:250px;height:auto;filter:drop-shadow(0 6px 0 rgba(78,59,47,.14));transition:transform .2s}
+.stage .stageName{font-size:15px;margin:2px 0 6px}
+.stage .brewMsg{font-size:14px;color:var(--ink2);min-height:22px;margin-top:2px}
+.brewBtn{width:100%;justify-content:center;font-size:19px;padding:12px;margin-top:6px;background:linear-gradient(120deg,var(--pink),var(--grape));color:#fff}
+.secTile{font-size:16px;margin:12px 2px 8px;display:flex;align-items:center;gap:6px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{position:relative;border:2.5px solid var(--ink);background:#fff;border-radius:12px 18px 12px 16px/16px 12px 18px 12px;padding:7px 12px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;box-shadow:2px 2px 0 rgba(78,59,47,.12);transition:transform .08s;font-family:inherit;color:var(--ink)}
+.opt:active{transform:scale(.94)}
+.opt .e{font-size:19px}
+.opt .clr{width:12px;height:12px;border-radius:50%;border:1.5px solid rgba(0,0,0,.15);display:inline-block}
+.opt.sel{background:var(--cream);transform:rotate(-1.6deg);box-shadow:3px 3px 0 rgba(78,59,47,.22);border-width:3px}
+.opt.sel::after{content:'✓';position:absolute;top:-9px;right:-7px;background:var(--ink);color:#FFF3D6;width:18px;height:18px;border-radius:50%;font-size:11px;display:flex;align-items:center;justify-content:center}
+.opt:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+.scrollx{display:flex;gap:10px;overflow-x:auto;padding:6px 2px 12px;scroll-snap-type:x proximity}
+.rec{flex:0 0 auto;width:172px;background:#fff;border:3px solid var(--ink);border-radius:14px 20px 14px 18px;padding:10px;box-shadow:3px 4px 0 rgba(78,59,47,.14);transform:rotate(var(--rr,0deg));scroll-snap-align:start;position:relative}
+.rec:nth-child(odd){--rr:-.6deg}.rec:nth-child(even){--rr:.5deg}
+.rec:hover{transform:rotate(0) translateY(-2px)}
+.rec .nm{font-size:15px;margin-bottom:2px}
+.rec .cp{font-size:11.5px;color:var(--ink2);line-height:1.55;min-height:52px}
+.rec .tag{position:absolute;top:-9px;right:6px;background:var(--rose);color:#fff;font-size:11px;padding:1px 8px;border-radius:999px;border:2px solid var(--ink);transform:rotate(4deg)}
+.alb{display:flex;gap:10px;overflow-x:auto;padding:6px 2px 12px}
+.drink{flex:0 0 auto;width:150px;text-align:center;background:#fff;border:2.5px solid var(--ink);border-radius:14px 18px 14px 16px;padding:10px;box-shadow:2px 3px 0 rgba(78,59,47,.14);transform:rotate(var(--rr,0deg));cursor:pointer}
+.drink:nth-child(odd){--rr:.4deg}.drink:nth-child(even){--rr:-.5deg}
+.drink .favs{font-size:30px;letter-spacing:2px}
+.drink .dn{font-size:13px;margin-top:4px;line-height:1.4}
+.drink .thumb,.community-drink{height:128px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(180deg,#F5FBFF,#FFF8E8);border-radius:10px}
+.drink .thumb svg,.community-drink svg{height:132px;width:auto;max-width:100%;filter:drop-shadow(0 4px 2px rgba(78,59,47,.16))}
+.drink .favs{display:none}
+.community-head{display:flex;justify-content:space-between;align-items:end;gap:10px;flex-wrap:wrap}
+.community-head h3{margin-bottom:2px}
+.community-sub{font-size:12px;color:var(--ink2);line-height:1.5}
+.community-tools{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:14px;padding-top:11px;border-top:2px dashed rgba(78,59,47,.18)}
+.filter-btn{font-family:inherit;border:2px solid var(--ink);background:#fff;border-radius:999px;padding:4px 11px;color:var(--ink);cursor:pointer;font-size:12px}
+.filter-btn.on{background:var(--sun);box-shadow:2px 2px 0 rgba(78,59,47,.16)}
+.poll{margin-top:12px;background:#FFF3DC;border:2.5px solid var(--ink);border-radius:13px;padding:10px 12px;box-shadow:2px 3px 0 rgba(78,59,47,.12)}
+.poll-title{font-size:13px;font-weight:700;margin-bottom:8px}.poll-options{display:flex;gap:7px;flex-wrap:wrap}.poll-btn{font-family:inherit;background:#fff;border:2px solid var(--ink);border-radius:10px;padding:5px 9px;cursor:pointer;font-size:12px}.poll-btn.voted{background:var(--mint)}
+.feed{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+.post{background:#fff;border:2.5px solid var(--ink);border-radius:14px 20px 14px 18px;padding:10px;box-shadow:2px 3px 0 rgba(78,59,47,.14);transform:rotate(var(--rr,0deg))}
+.post:nth-child(odd){--rr:-.35deg}.post:nth-child(even){--rr:.35deg}
+.post-top{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;margin-bottom:7px}
+.avatar{width:28px;height:28px;border:2px solid var(--ink);border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--sun);font-size:16px}
+.post .community-drink{height:150px}
+.post .community-drink svg{height:154px}
+.result-cup{height:210px;display:flex;align-items:center;justify-content:center;margin:-2px auto 2px;background:linear-gradient(180deg,#F5FBFF,#FFF8E8);border-radius:14px}
+.result-cup svg{height:218px;width:auto;filter:drop-shadow(0 7px 3px rgba(78,59,47,.18))}
+.post-name{font-size:15px;margin-top:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.post-desc{font-size:11px;color:var(--ink2);line-height:1.5;min-height:32px;margin-top:2px}
+.post-foot{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:12px;color:var(--ink2);gap:6px;flex-wrap:wrap}
+.post-actions{display:flex;gap:5px;flex-wrap:wrap}.action-btn{font-family:inherit;border:2px solid var(--ink);background:#FFF3DC;border-radius:999px;padding:3px 7px;cursor:pointer;color:var(--ink);font-size:11px}.action-btn.on{background:var(--pink)}
+.comment-list{font-size:11px;color:var(--ink2);line-height:1.5;margin-top:7px}.comment-list div{padding:2px 0;border-top:1px dotted rgba(78,59,47,.2)}
+.comment-row{display:flex;gap:5px;margin-top:7px}.comment-row input{min-width:0;flex:1;border:2px solid var(--ink);border-radius:999px;padding:5px 8px;font-family:inherit;font-size:11px;background:#fff}.comment-row button{border:2px solid var(--ink);border-radius:999px;background:var(--sky);font-family:inherit;padding:3px 8px;cursor:pointer}
+.remix-btn{margin-top:7px;width:100%;font-family:inherit;border:2px solid var(--ink);border-radius:999px;background:var(--mint);padding:4px;cursor:pointer;font-size:12px}
+.empty-feed{grid-column:1/-1}
+@media(max-width:520px){.main-nav{width:100%;margin-left:0}.nav-btn{flex:1}.feed{grid-template-columns:1fr}}
+.scorePill{display:inline-block;font-size:11px;background:var(--sun);border:2px solid var(--ink);border-radius:999px;padding:0 8px;margin-top:4px}
+.empty2{color:var(--ink2);font-size:13px;padding:14px;text-align:center;border:2.5px dashed rgba(78,59,47,.3);border-radius:16px}
+.chip{display:inline-flex;align-items:center;gap:5px;background:#fff;border:2.5px solid var(--ink);padding:4px 10px;border-radius:999px;font-size:12px;box-shadow:1px 2px 0 rgba(78,59,47,.18)}
+/* gauge */
+.grow{height:22px;border:2.5px solid var(--ink);border-radius:999px;background:#fff;overflow:hidden;box-shadow:inset 0 2px 0 rgba(0,0,0,.06)}
+.grow i{display:block;height:100%;border-radius:999px;transition:width .9s cubic-bezier(.34,1.56,.64,1)}
+.gbar{
+  display:grid;
+  grid-template-columns:auto 1fr 55px; /* 自动适应标签宽度，数值列加宽 */
+  gap:10px;
+  align-items:center;
+  margin:8px 0;
+  font-size:14px;
+}
+.gbar .num{font-family:'Kalam',cursive;text-align:right;white-space:nowrap}
+.gbar span:first-child{white-space:nowrap} /* 标签不换行 */
+/* result pop */
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:70;overflow:hidden}
+.confetti i{position:absolute;top:-30px;font-size:20px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+/* bubble */
+.bubble{position:absolute;border-radius:50%;background:radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(200,230,255,0.3));pointer-events:none;animation:bubbleUp linear forwards}
+@keyframes bubbleUp{0%{opacity:1;transform:translateY(0) scale(0.8)}100%{opacity:0;transform:translateY(-120px) scale(1.2)}}
+/* misc */
+.hintDoodle{text-align:center;font-size:13px;color:var(--ink2);margin-top:8px}
+.footer{text-align:center;color:#b7a68f;font-size:12px;margin-top:26px}
+/* 修复结果弹窗文字显示 */
+#rRec{display:block;width:100%;margin:6px 0;min-height:20px;font-size:14px;line-height:1.6;word-break:break-word;overflow-wrap:break-word;white-space:normal;padding:0 2px}
+@media(max-width:760px){
+  .gGrid{grid-template-columns:1fr}
+  .brand{font-size:19px}
+  .sheet{padding:16px}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand">
+      <div class="logo" style="background:var(--pink)">🧋</div>
+      <div>啵啵奶茶工坊<small>· 选料做杯 · 快乐复刻</small></div>
+    </div>
+    <nav class="main-nav" aria-label="主导航">
+      <button class="nav-btn on" id="navGame" onclick="switchPage('game')">🧋 工坊</button>
+      <button class="nav-btn" id="navCommunity" onclick="switchPage('community')">🌼 社区</button>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ============ 奶茶工坊页 ============ -->
+  <section class="page on" id="pg-game">
+    <h3 class="sec" style="margin:16px 4px 4px">🧋 啵啵奶茶工坊 <span class="tiny">选好料,做一杯你自己的奶茶吧!</span></h3>
+
+    <div class="gGrid">
+      <!-- 制作台 -->
+      <div>
+        <div class="stage" id="stageArea" onclick="shakeCup()">
+          <span class="cloud">☁️</span><span class="cloud c2">⭐</span>
+          <div class="stageName">🍹 我的小料杯 <span class="tiny" id="shakeHint">(点我摇一摇)</span></div>
+          <div id="cupStage"></div>
+          <div class="row" style="justify-content:center;gap:8px;margin-top:6px">
+            <button class="btn brewBtn" onclick="brew()">🥤 咕嘟咕嘟 · 开始制作</button>
+            <button class="btn small sky" onclick="randomBrew()">🎲 随机搭配</button>
+          </div>
+          <div class="brewMsg" id="brewMsg">选好右边的小料,点我开始~</div>
+        </div>
+      </div>
+
+      <!-- 选择区 -->
+      <div class="card" style="margin-top:0">
+        <div class="secTile">🏺 1. 挑个杯子</div>
+        <div class="opts" id="optCup"></div>
+
+        <div class="secTile">🫖 2. 选茶底 / 奶底</div>
+        <div class="opts" id="optTea"></div>
+
+        <div class="secTile">🍡 3. 加小料 <span class="tiny" id="topCount">(最多选3样)</span></div>
+        <div class="opts" id="optTop"></div>
+
+        <div class="secTile">🍓 4. 放水果 <span class="tiny" id="fruitCount">(最多2样)</span></div>
+        <div class="opts" id="optFruit"></div>
+
+        <div class="secTile">🍬 5. 甜度 & 冰块</div>
+        <div class="opts" id="optSugar"></div>
+        <div class="opts" style="margin-top:8px" id="optIce"></div>
+      </div>
+    </div>
+
+    <!-- 配方书 -->
+    <div class="card">
+      <div class="tape" style="background:var(--pink)"></div>
+      <h3 class="sec" style="margin-top:6px">📖 奶茶配方书 <span class="tiny">照着做,轻松复刻经典</span></h3>
+      <div class="scrollx" id="recipeBook"></div>
+    </div>
+
+    <!-- 我的图鉴 -->
+    <div class="card">
+      <div class="tape" style="background:var(--mint)"></div>
+      <div class="row" style="justify-content:space-between;flex-wrap:wrap">
+        <h3 class="sec" style="margin-top:6px">🗂 我的奶茶图鉴</h3>
+        <button class="btn small" onclick="clearBrews()">🧹 清空</button>
+      </div>
+      <div class="alb" id="brewAlbum"></div>
+    </div>
+  </section>
+
+  <section class="page" id="pg-community">
+    <div class="card">
+      <div class="tape" style="background:var(--sky)"></div>
+      <div class="community-head">
+        <div><h3 class="sec" style="margin-top:6px">🌼 奶茶社区</h3><div class="community-sub">看看大家今天喝什么，也把你的得意作品分享出来。</div></div>
+        <button class="btn small pink" onclick="publishCurrent()">📮 发布我的奶茶</button>
+      </div>
+      <div class="community-tools">
+        <span class="tiny">浏览方式</span>
+        <button class="filter-btn on" data-filter="recommend" onclick="setCommunityFilter('recommend')">✨ 推荐</button>
+        <button class="filter-btn" data-filter="hot" onclick="setCommunityFilter('hot')">🔥 热门</button>
+        <button class="filter-btn" data-filter="mine" onclick="setCommunityFilter('mine')">🧋 我的</button>
+      </div>
+      <div class="poll"><div class="poll-title">📊 今日口味投票：下一杯想喝什么？</div><div class="poll-options" id="pollOptions"></div></div>
+      <div class="feed" id="communityFeed"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ 出杯结果弹窗 ============ -->
+<div class="ov" id="ovResult">
+  <div class="sheet" style="text-align:center">
+    <div class="result-cup" id="rCupPreview"></div>
+    <h3 style="margin:2px 0" id="rName">波波茶</h3>
+    <div class="muted" id="rSub" style="font-size:13px;padding:0 4px;"></div>
+    <div id="rGaugeWrap" style="margin:16px 0 4px"></div>
+    <div id="rRec"></div>
+    <div class="row" style="justify-content:center;flex-wrap:wrap;gap:6px;margin-top:6px" id="rComps"></div>
+    <div class="sheetBtns" style="justify-content:center;flex-wrap:wrap">
+      <button class="btn mint" onclick="closeOv('ovResult')">🥤 再来一杯</button>
+      <button class="btn grape small" onclick="shareResult()">📤 分享文案</button>
+    </div>
+  </div>
+</div>
+<div class="confetti" id="confetti"></div>
+
+<script>
+/* ================== 奶茶数据 & 常量 ================== */
+const LS_BREW='ttz_brews';
+const LS_COMMUNITY='ttz_community';
+const LS_POLL='ttz_poll';
+const CUPS=[
+  {k:'fat', n:'胖胖杯', e:'🧋', d:'奶茶店700cc同款'},
+  {k:'tall',n:'随身杯', e:'🥤', d:'透明高杯,分层好看'},
+  {k:'glass',n:'高脚杯', e:'🍸', d:'优雅下午茶氛围'},
+  {k:'short',n:'矮萌杯', e:'🍵', d:'圆滚滚,一口满足'}
+];
+const TEAS=[
+  {k:'black',n:'红茶',e:'🍂',c:'#C98A4B'},{k:'oolong',n:'乌龙茶',e:'🫖',c:'#D9A05B'},
+  {k:'green',n:'绿茶',e:'🌿',c:'#B8C97C'},{k:'jasmine',n:'茉莉绿茶',e:'🍃',c:'#D6C98A'},
+  {k:'milk',n:'鲜奶',e:'🥛',c:'#F2E7D5'},{k:'coconut',n:'椰乳',e:'🥥',c:'#FBEFD8'},
+  {k:'matcha',n:'抹茶',e:'🍵',c:'#A5C882'}
+];
+const TOPPINGS=[
+  {k:'pearl',n:'珍珠',e:'⚫',c:'#3E2A20',h:20},{k:'boba',n:'脆波波',e:'🟣',c:'#7A5FB0',h:18},
+  {k:'taro',n:'芋圆',e:'🍠',c:'#C49AE0',h:18},{k:'pudding',n:'布丁',e:'🍮',c:'#FFD86E',h:16},
+  {k:'coco',n:'椰果',e:'⬜',c:'#FFF3D6',h:14},{k:'sago',n:'西米',e:'⚪',c:'#EFEFEF',h:14},
+  {k:'redbean',n:'红豆',e:'🔴',c:'#B04A4A',h:16},{k:'cream',n:'芝士奶盖',e:'🧀',c:'#FFF6E3',h:26,top:1}
+];
+const FRUITS=[
+  {k:'mango',n:'芒果',e:'🥭'},{k:'straw',n:'草莓',e:'🍓'},{k:'lemon',n:'柠檬',e:'🍋'},
+  {k:'water',n:'西瓜',e:'🍉'},{k:'grape',n:'葡萄',e:'🍇'},{k:'peach',n:'桃子',e:'🍑'}
+];
+const SUGAR=[{k:'0',n:'无糖'},{k:'3',n:'三分糖'},{k:'5',n:'五分糖'},{k:'7',n:'七分糖'},{k:'10',n:'全糖'}];
+const ICE=[{k:'none',n:'去冰'},{k:'less',n:'少冰'},{k:'normal',n:'正常冰'},{k:'more',n:'多冰'}];
+const RECIPES=[
+  {n:'经典珍珠奶茶',s:'奶香醇厚 × 黑糖珍珠的永流传',cup:'fat',tea:'black',tops:['pearl'],fruits:[],sugar:'7',ice:'normal',price:12,
+   desc:'红茶+鲜奶 的经典搭配,珍珠负责 Q 弹,懂的人都懂。'},
+  {n:'多肉葡萄',s:'满口果肉,夏日顶流',cup:'tall',tea:'jasmine',tops:['boba','cream'],fruits:['grape'],sugar:'5',ice:'less',price:18,
+   desc:'葡萄果肉压底 + 芝士奶盖,茉莉茶做底清爽不腻。'},
+  {n:'杨枝甘露',s:'西柚芒果椰香三重奏',cup:'glass',tea:'coconut',tops:['sago'],fruits:['mango'],sugar:'5',ice:'less',price:22,
+   desc:'椰乳打底,芒果香甜,西米在杯底弹弹的~'},
+  {n:'莓莓波波牛乳',s:'少女心爆炸的草莓奶',cup:'fat',tea:'milk',tops:['boba','pudding'],fruits:['straw'],sugar:'5',ice:'normal',price:19,
+   desc:'草莓果肉 + 鲜奶 + 布丁波波,粉色少女心拉满。'},
+  {n:'手打柠檬红',s:'酸酸甜甜,一秒回神',cup:'short',tea:'black',tops:['coco'],fruits:['lemon'],sugar:'7',ice:'more',price:10,
+   desc:'红茶 + 柠檬的清爽组合,椰果增加咀嚼感。'},
+  {n:'椰香芋圆乌龙',s:'乌龙茶底配软糯芋圆',cup:'fat',tea:'oolong',tops:['taro','cream'],fruits:[],sugar:'3',ice:'normal',price:16,
+   desc:'芋圆的软糯遇上乌龙的清冽,奶盖封顶。'},
+  {n:'抹茶红豆拿铁',s:'微苦回甘的治愈绿',cup:'tall',tea:'matcha',tops:['redbean'],fruits:[],sugar:'3',ice:'normal',price:17,
+   desc:'抹茶的微苦 × 蜜红豆的甜,成年人の快乐。'},
+  {n:'西瓜椰椰',s:'夏天的风我永远记得',cup:'glass',tea:'coconut',tops:['sago'],fruits:['water'],sugar:'5',ice:'more',price:14,
+   desc:'整颗西瓜捣碎加椰乳,西米兜底,冰冰凉凉。'},
+  {n:'黑糖珍珠鲜奶',s:'虎纹挂壁,黑糖爱好者福音',cup:'fat',tea:'milk',tops:['pearl'],fruits:[],sugar:'10',ice:'normal',price:16,
+   desc:'黑糖珍珠挂壁 + 鲜奶,甜度全糖才够味。'},
+  {n:'芋泥波波',s:'绵密芋泥配Q弹波波',cup:'short',tea:'milk',tops:['taro','boba'],fruits:[],sugar:'5',ice:'less',price:20,
+   desc:'手捣芋泥+鲜奶+波波,每一口都有料。'}
+];
+const brewState={cup:'fat',tea:'black',tops:[],fruits:[],sugar:'7',ice:'normal'};
+let brews=[], uid=1, lastResult=null;
+let communityPosts=[], communityFilter='recommend', pollState={choice:'',votes:{奶茶:12,果茶:8,奶盖茶:15,纯茶:5}};
+
+const $=id=>document.getElementById(id);
+const randomItem=a=>a[Math.floor(Math.random()*a.length)];
+
+/* ================== 持久化 ================== */
+function load(){
+  try{brews=JSON.parse(localStorage.getItem(LS_BREW))||[]}catch(e){brews=[]}
+  try{communityPosts=JSON.parse(localStorage.getItem(LS_COMMUNITY))||[]}catch(e){communityPosts=[]}
+  try{pollState=Object.assign(pollState,JSON.parse(localStorage.getItem(LS_POLL))||{})}catch(e){}
+  if(!communityPosts.length){
+    communityPosts=[
+      {id:'seed1',user:'奶盖观察员',avatar:'🧋',name:'多肉葡萄',desc:'今天的葡萄果肉和芝士奶盖，颜色真的很像店里刚拿到的那杯。',cup:'tall',tea:'jasmine',tops:['boba','cream'],fruits:['grape'],sugar:'5',ice:'less',likes:28,liked:false,saved:false,wants:11,comments:['这杯看起来好清爽！']},
+      {id:'seed2',user:'芋泥研究所',avatar:'🍠',name:'芋香乌龙',desc:'少糖少冰，给软糯芋圆留一点茶香。',cup:'fat',tea:'oolong',tops:['taro','cream'],fruits:[],sugar:'3',ice:'less',likes:16,liked:false,saved:false,wants:7,comments:[]},
+      {id:'seed3',user:'夏日补给站',avatar:'🍋',name:'手打柠檬红',desc:'酸甜、透亮、冰块叮叮当当，适合下午三点。',cup:'short',tea:'black',tops:['coco'],fruits:['lemon'],sugar:'7',ice:'more',likes:22,liked:false,saved:false,wants:14,comments:['柠檬红茶永远不会出错。']}
+    ];
+  }
+}
+function save(){localStorage.setItem(LS_BREW,JSON.stringify(brews))}
+function saveCommunity(){localStorage.setItem(LS_COMMUNITY,JSON.stringify(communityPosts));localStorage.setItem(LS_POLL,JSON.stringify(pollState))}
+
+/* ================== 选项渲染 ================== */
+function renderGame(){
+  renderOpts('optCup',CUPS.map(c=>({k:c.k,n:c.n,e:c.e,sel:brewState.cup===c.k,d:c.d,cls:''})),k=>{brewState.cup=k;renderGame()},'cup');
+  renderOpts('optTea',TEAS.map(c=>({k:c.k,n:c.n,e:c.e,sel:brewState.tea===c.k,clr:c.c})),k=>{brewState.tea=k;renderGame()},'tea');
+  renderOpts('optTop',TOPPINGS.map(c=>({k:c.k,n:c.n,e:c.e,sel:brewState.tops.includes(c.k),clr:c.c})),k=>{toggleArr('tops',k,3);renderGame()},'top',true);
+  renderOpts('optFruit',FRUITS.map(c=>({k:c.k,n:c.n,e:c.e,sel:brewState.fruits.includes(c.k)})),k=>{toggleArr('fruits',k,2);renderGame()},'fruit');
+  renderOpts('optSugar',SUGAR.map(c=>({k:c.k,n:c.n,sel:brewState.sugar===c.k})),k=>{brewState.sugar=k;renderGame()},'sugar');
+  renderOpts('optIce',ICE.map(c=>({k:c.k,n:c.n,e:iceEmoji(c.k),sel:brewState.ice===c.k})),k=>{brewState.ice=k;renderGame()},'ice');
+  $('topCount').textContent=`(最多选3样，已选${brewState.tops.length})`;
+  $('fruitCount').textContent=`(最多选2样，已选${brewState.fruits.length})`;
+  renderRecipes();renderAlbum();updateStage(true);
+}
+function iceEmoji(k){return {none:'',less:'🧊',normal:'🧊',more:'🧊🧊'}[k]||''}
+function renderOpts(id,arr,onPick,kind,multi){
+  const box=$(id);box.innerHTML='';
+  arr.forEach(o=>{
+    const b=document.createElement('button');b.className='opt'+(o.sel?' sel':'');
+    const extra=o.clr?`<span class="clr" style="background:${o.clr}"></span>`:'';
+    b.innerHTML=(o.e?`<span class="e">${o.e}</span>`:'')+extra+o.n+(kind==='cup'&&o.sel?' ✓':'');
+    b.title=o.d||'';
+    b.onclick=()=>onPick(o.k);
+    box.appendChild(b);
+  });
+}
+function toggleArr(key,k,max){
+  const a=brewState[key];
+  if(a.includes(k)){brewState[key]=a.filter(x=>x!==k)}
+  else if(a.length<max){brewState[key]=[...a,k]}
+  else toast(`最多选 ${max} 样哦~`);
+}
+function toast(msg){const t=document.createElement('div');t.textContent=msg;
+  t.style.cssText='position:fixed;left:50%;bottom:120px;transform:translateX(-50%);background:var(--ink);color:#FFF3D6;padding:8px 18px;border-radius:999px;font-size:14px;z-index:99;animation:pop .2s;box-shadow:0 5px 0 rgba(0,0,0,.2)';
+  document.body.appendChild(t);setTimeout(()=>t.remove(),1400)}
+
+/* ================== 配方书 & 图鉴 ================== */
+function pickRecipe(r){
+  brewState.cup=r.cup;brewState.tea=r.tea;brewState.tops=[...r.tops];brewState.fruits=[...r.fruits];
+  brewState.sugar=r.sugar;brewState.ice=r.ice;
+  renderGame();
+  $('brewMsg').textContent=`已按「${r.n}」备好料,点下方开始制作!`;
+  window.scrollTo({top:0});
+}
+function renderRecipes(){
+  const box=$('recipeBook');box.innerHTML='';
+  RECIPES.forEach((r,i)=>{
+    const cup=CUPS.find(c=>c.k===r.cup),tea=TEAS.find(c=>c.k===r.tea);
+    const tops=r.tops.map(k=>TOPPINGS.find(t=>t.k===k).e).join('');
+    const fr=r.fruits.map(k=>FRUITS.find(f=>f.k===k).e).join('');
+    const d=document.createElement('div');d.className='rec';
+    d.innerHTML=`<span class="tag">¥${r.price}</span>
+      <div class="nm">${cup.e}${r.n}</div>
+      <div class="cp">${cup.d.split(',')[0]} · ${tea.n}<br>${tops||'不加小料'} ${fr?fr+' ':''}<br>${SUGAR.find(s=>s.k===r.sugar).n} / ${ICE.find(s=>s.k===r.ice).n}</div>
+      <div class="muted" style="font-size:11px;line-height:1.5">${r.desc}</div>
+      <button class="btn small" style="width:100%;justify-content:center;margin-top:8px" onclick="pickRecipe(RECIPES[${i}])">🔧 一键搭配</button>`;
+    box.appendChild(d);
+  });
+}
+function renderAlbum(){
+  const box=$('brewAlbum');box.innerHTML='';
+  if(!brews.length){box.innerHTML=`<div class="empty2">还没做过奶茶呢,快去做一杯吧~ <span style="font-size:22px">🧋</span></div>`;return}
+  brews.slice().reverse().forEach(b=>{
+    const d=document.createElement('div');d.className='drink';d.title='点击再看一眼配方';
+    const show=b.favs.split('').slice(0,3).join('');
+    d.innerHTML=`<div class="thumb">${cupPreview(b)}</div><div class="dn">${b.name}</div>
+      <div><span class="scorePill">⭐ ${b.score}</span></div>`;
+    d.onclick=()=>{brewState.cup=b.cup;brewState.tea=b.tea;brewState.tops=b.tops;brewState.fruits=b.fruits;brewState.sugar=b.sugar;brewState.ice=b.ice;renderGame();window.scrollTo({top:0})};
+    box.appendChild(d);
+  });
+}
+function clearBrews(){if(brews.length&&!confirm('确定清空所有自制奶茶图鉴吗?'))return;brews=[];save();renderAlbum()}
+function cupByKey(k){return CUPS.find(c=>c.k===k)}
+
+function cupPreview(state){
+  const previous={cup:brewState.cup,tea:brewState.tea,tops:[...brewState.tops],fruits:[...brewState.fruits],sugar:brewState.sugar,ice:brewState.ice};
+  Object.assign(brewState,{cup:state.cup,tea:state.tea,tops:[...(state.tops||[])],fruits:[...(state.fruits||[])],sugar:state.sugar||'5',ice:state.ice||'less'});
+  const svg=cupSVG().svg;
+  Object.assign(brewState,previous);
+  return svg;
+}
+
+function renderCommunity(){
+  const box=$('communityFeed');if(!box)return;
+  box.innerHTML='';
+  renderPoll();
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.toggle('on',b.dataset.filter===communityFilter));
+  let posts=communityPosts.slice();
+  if(communityFilter==='hot')posts.sort((a,b)=>(b.likes+b.wants)-(a.likes+a.wants));
+  else if(communityFilter==='mine')posts=posts.filter(p=>p.user==='我');
+  posts.reverse().forEach(p=>{
+    const d=document.createElement('article');d.className='post';
+    d.innerHTML=`<div class="post-top"><span class="avatar">${p.avatar}</span><span>${p.user}</span><span class="muted">· 今日分享</span></div>
+      <div class="community-drink">${cupPreview(p)}</div><div class="post-name">${p.name}</div>
+      <div class="post-desc">${p.desc}</div><div class="post-foot"><span>手作配方分享</span><div class="post-actions"><button class="action-btn${p.liked?' on':''}" onclick="toggleLike('${p.id}')">${p.liked?'♥':'♡'} ${p.likes}</button><button class="action-btn${p.saved?' on':''}" onclick="toggleSave('${p.id}')">${p.saved?'★':'☆'} 收藏</button><button class="action-btn${p.wanted?' on':''}" onclick="toggleWant('${p.id}')">🥤 想喝 ${p.wants||0}</button></div></div>
+      <div class="comment-list">${(p.comments||[]).slice(-2).map(c=>`<div>💬 ${c}</div>`).join('')}</div>
+      <div class="comment-row"><input id="comment-${p.id}" maxlength="40" placeholder="说点喝后感…"><button onclick="addComment('${p.id}')">发送</button></div>
+      <button class="remix-btn" onclick="remixPost('${p.id}')">🔧 复刻这杯</button>`;
+    box.appendChild(d);
+  });
+  if(!posts.length)box.innerHTML='<div class="empty2 empty-feed">你还没有发布作品，先去工坊做一杯吧 🧋</div>';
+}
+function renderPoll(){
+  const box=$('pollOptions');if(!box)return;box.innerHTML='';
+  Object.entries(pollState.votes).forEach(([name,count])=>{const b=document.createElement('button');b.className='poll-btn'+(pollState.choice===name?' voted':'');b.textContent=`${name} ${count}`;b.onclick=()=>votePoll(name);box.appendChild(b)});
+}
+function setCommunityFilter(filter){communityFilter=filter;renderCommunity()}
+function votePoll(name){if(pollState.choice===name)return; if(pollState.choice)pollState.votes[pollState.choice]=Math.max(0,pollState.votes[pollState.choice]-1);pollState.choice=name;pollState.votes[name]++;saveCommunity();renderCommunity();toast(`📊 已投给${name}，明天来看看结果！`)}
+function switchPage(page){
+  const isCommunity=page==='community';
+  $('pg-game').classList.toggle('on',!isCommunity);$('pg-community').classList.toggle('on',isCommunity);
+  $('navGame').classList.toggle('on',!isCommunity);$('navCommunity').classList.toggle('on',isCommunity);
+  if(isCommunity)renderCommunity();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleLike(id){
+  const p=communityPosts.find(x=>x.id===id);if(!p)return;
+  p.liked=!p.liked;p.likes=Math.max(0,p.likes+(p.liked?1:-1));saveCommunity();renderCommunity();
+}
+function toggleSave(id){const p=communityPosts.find(x=>x.id===id);if(!p)return;p.saved=!p.saved;saveCommunity();renderCommunity();toast(p.saved?'⭐ 已收藏这杯配方':'已取消收藏')}
+function toggleWant(id){const p=communityPosts.find(x=>x.id===id);if(!p)return;p.wanted=!p.wanted;p.wants=Math.max(0,(p.wants||0)+(p.wanted?1:-1));saveCommunity();renderCommunity()}
+function addComment(id){const p=communityPosts.find(x=>x.id===id),input=$('comment-'+id);if(!p||!input||!input.value.trim())return;p.comments=p.comments||[];p.comments.push(input.value.trim());input.value='';saveCommunity();renderCommunity();toast('💬 评论已送达！')}
+function remixPost(id){const p=communityPosts.find(x=>x.id===id);if(!p)return;Object.assign(brewState,{cup:p.cup,tea:p.tea,tops:[...(p.tops||[])],fruits:[...(p.fruits||[])],sugar:p.sugar,ice:p.ice});renderGame();switchPage('game');toast(`🔧 已按「${p.name}」准备配方`)}
+function publishCurrent(){
+  const name=lastResult?.name||genName();
+  const state=lastResult?.state||brewState;
+  communityPosts.push({id:'p'+Date.now(),user:'我',avatar:'🧋',name,desc:'刚在工坊做好的原创特调，欢迎来试试这个搭配！',cup:state.cup,tea:state.tea,tops:[...(state.tops||[])],fruits:[...(state.fruits||[])],sugar:state.sugar,ice:state.ice,likes:0,liked:false,saved:false,wants:0,comments:[]});
+  saveCommunity();renderCommunity();switchPage('community');toast('📮 已发布到奶茶社区！');
+}
+
+/* ---------- 杯子可视化（真正调制好的奶茶效果） ---------- */
+const uidGen=()=>'c'+(uid++);
+function cupSVG(){
+  const id=uidGen();
+  const tea=TEAS.find(t=>t.k===brewState.tea)||TEAS[0];
+  const bottomTops=brewState.tops.map(k=>TOPPINGS.find(t=>t.k===k)).filter(t=>!t.top);
+  const creamTops=brewState.tops.map(k=>TOPPINGS.find(t=>t.k===k)).filter(t=>t.top);
+  const fruitItems=brewState.fruits.map(k=>FRUITS.find(f=>f.k===k));
+  const H=300,W=220;
+  const shapes={
+    fat:{o:`M56 118 L164 118 L168 122 L188 250 Q189 258 180 258 L40 258 Q31 258 32 250 L52 122 Z`,
+      clip:`M60 130 L160 130 L176 250 Q177 254 172 254 L48 254 Q43 254 44 250 Z`,
+      straw:[{x:102,y:52,len:86,rot:0}],bob:[],cap:1,face:0,
+      innerTop:128, innerBot:256, liquidTop:132},
+    tall:{o:`M58 86 L162 86 L168 90 L158 248 Q157 256 149 256 L71 256 Q63 256 62 248 L52 90 Z`,
+      clip:`M63 98 L157 98 L152 248 Q151 252 147 252 L73 252 Q69 252 68 248 Z`,
+      straw:[{x:96,y:40,len:60,rot:0}],bob:[],cap:1,face:0,
+      innerTop:96, innerBot:252, liquidTop:100},
+    glass:{o:`M62 152 C70 190 66 232 62 246 L62 250 L158 250 L158 246 C154 232 150 190 158 152 Q110 164 62 152 Z M120 250 L100 250 L104 268 Q90 282 70 282 Q90 288 108 284 L128 284 Q150 288 152 280 Q140 280 122 268 Z`,
+      clip:`M68 158 C74 192 71 230 68 244 L152 244 C149 230 146 192 152 158 Q110 168 68 158 Z`,
+      straw:[],bob:[{x:132,y:150,rot:-8,len:92}],cap:0,face:0,
+      innerTop:156, innerBot:246, liquidTop:160},
+    short:{o:`M50 168 L170 168 L178 174 L174 256 Q173 262 166 262 L54 262 Q47 262 46 256 L42 174 Z`,
+      clip:`M56 180 L164 180 L168 256 Q167 259 162 259 L58 259 Q53 259 52 256 Z`,
+      straw:[{x:156,y:60,len:124,rot:8}],bob:[],cap:0,face:1,
+      innerTop:178, innerBot:260, liquidTop:182}
+  }[brewState.cup];
+  const innerTop=shapes.innerTop, innerBot=shapes.innerBot;
+  const rnd=(i)=>{const x=Math.sin(i*127.1+id.length)*43758.5453;return x-Math.floor(x)};
+  const randBetween=(a,b,i)=>a+(b-a)*(0.2+0.6*rnd(i));
+  
+  // 计算液体填充高度：小料占底部空间，水果悬浮，奶盖封顶
+  const topPadding=18;
+  const bottomPadding=6;
+  let liquidH=innerBot-innerTop-topPadding-bottomPadding;
+  let bottomOccupy=0;
+  bottomTops.forEach(t=>{bottomOccupy+=t.h*0.5+4});
+  if(bottomTops.length>2)bottomOccupy=Math.min(bottomOccupy,60);
+  const hasCream=creamTops.length>0;
+  const creamH=hasCream?26:0;
+  const liquidTopY=innerTop+topPadding;
+  const liquidBotY=innerBot-bottomPadding-(hasCream?creamH:0);
+  const liquidHeight=liquidBotY-liquidTopY;
+  const fillH=Math.max(30,liquidHeight-bottomOccupy);
+  const liquidFillStart=liquidBotY-fillH;
+  
+  const baseCol=tea.c;
+  const gradId=id+'g';
+  
+  let out='';
+  out+=`<clipPath id="${id}cp"><path d="${shapes.clip}"/></clipPath>`;
+  out+=`<path d="${shapes.o}" fill="rgba(255,255,255,.26)" stroke="#4E3B2F" stroke-width="4.5" stroke-linejoin="round"/>`;
+  
+  out+=`<g clip-path="url(#${id}cp)">`;
+  // 液体
+  out+=`<defs><linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="${lighten(baseCol)}"/>
+    <stop offset="0.4" stop-color="${baseCol}"/>
+    <stop offset="1" stop-color="${darken(baseCol)}"/>
+  </linearGradient></defs>`;
+  const liquidRectY=liquidFillStart;
+  const liquidRectH=liquidBotY-liquidFillStart;
+  out+=`<rect x="0" y="${liquidRectY}" width="${W}" height="${liquidRectH}" fill="url(#${gradId})" opacity="${tea.k==='milk'||tea.k==='coconut'?0.92:0.88}"/>`;
+  out+=`<ellipse cx="${W/2}" cy="${liquidFillStart+4}" rx="${W/2-20}" ry="8" fill="rgba(255,255,255,0.25)"/>`;
+  for(let i=0;i<10;i++){
+    const bx=40+rnd(i+10)*140, by=liquidFillStart+10+rnd(i+20)*(liquidRectH-20);
+    out+=`<circle cx="${bx}" cy="${by}" r="${1+rnd(i+30)*3}" fill="rgba(255,255,255,${0.1+rnd(i+40)*0.25})"/>`;
+  }
+  
+  // 底部小料
+  let yy=liquidBotY;
+  bottomTops.forEach((tp,ti)=>{
+    const h=tp.h*0.7+6;
+    const y0=yy-h;
+    const cx=randBetween(45,175,ti*3+1);
+    out+=drawTopping(tp,cx,y0,h,rnd(ti*7+3),'bottom');
+    yy=y0-2;
+  });
+  
+  // 水果
+  fruitItems.forEach((f,fi)=>{
+    const fx=randBetween(40,180,fi*5+7);
+    const fy=liquidFillStart+20+rnd(fi*7+11)*(liquidRectH-40);
+    const size=22+rnd(fi*3)*10;
+    out+=`<text x="${fx}" y="${fy}" font-size="${size}" opacity=".95">${f.e}</text>`;
+    out+=`<circle cx="${fx+4}" cy="${fy-6}" r="${3+rnd(fi+5)*3}" fill="rgba(255,255,255,0.3)"/>`;
+  });
+  
+  // 冰块
+  const iceLevel=brewState.ice;
+  if(iceLevel!=='none'){
+    const numIce=iceLevel==='less'?3:iceLevel==='normal'?5:8;
+    for(let i=0;i<numIce;i++){
+      const ix=35+rnd(i*13+100)*150;
+      const iy=liquidFillStart+10+rnd(i*17+50)*(liquidRectH*0.7);
+      const size=8+rnd(i*7)*8;
+      out+=`<rect x="${ix}" y="${iy}" width="${size}" height="${size*0.9}" rx="3" fill="rgba(220,240,255,0.7)" stroke="rgba(180,210,240,0.5)" stroke-width="1.2" transform="rotate(${rnd(i*5)*30} ${ix+size/2} ${iy+size/2})"/>`;
+      out+=`<rect x="${ix+2}" y="${iy+2}" width="${size*0.4}" height="${size*0.3}" rx="1" fill="rgba(255,255,255,0.5)" transform="rotate(${rnd(i*5)*30} ${ix+size/2} ${iy+size/2})"/>`;
+    }
+  }
+  
+  // 奶盖
+  if(hasCream){
+    const creamY=liquidFillStart-creamH+2;
+    out+=`<rect x="0" y="${creamY}" width="${W}" height="${creamH-2}" fill="${creamTops[0].c}" opacity=".96"/>`;
+    out+=`<path d="M0 ${creamY} Q 55 ${creamY-6} 110 ${creamY} T 220 ${creamY}" fill="none" stroke="#fff" stroke-width="3" opacity=".7"/>`;
+    out+=`<path d="M30 ${creamY+8} q 8 -8 18 -4 q 10 -6 16 0 q 12 -8 22 -2 q 12 -6 24 2 q 12 -8 20 -4 q 8 -6 14 0 q 8 -8 18 -4 q 10 -6 20 0 q 6 -4 10 0" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".6"/>`;
+    out+=`<circle cx="${60+rnd(1)*100}" cy="${creamY+10+rnd(2)*8}" r="${3+rnd(3)*3}" fill="rgba(255,255,255,0.4)"/>`;
+    out+=`<circle cx="${90+rnd(4)*100}" cy="${creamY+6+rnd(5)*10}" r="${2+rnd(6)*3}" fill="rgba(255,255,255,0.3)"/>`;
+  }
+
+  // 店铺贴纸和杯面高光，让透明塑料杯更接近真实外带杯
+  const labelY=Math.min(innerBot-38, Math.max(liquidFillStart+38, innerTop+70));
+  out+=`<g opacity=".92"><rect x="72" y="${labelY}" width="76" height="27" rx="5" fill="#FFF8E8" stroke="#4E3B2F" stroke-width="1.5"/><text x="110" y="${labelY+11}" text-anchor="middle" font-size="7" font-family="Arial,sans-serif" font-weight="700" fill="#4E3B2F">BOBO TEA</text><text x="110" y="${labelY+20}" text-anchor="middle" font-size="5" font-family="Arial,sans-serif" fill="#7A6A5B">HANDCRAFTED</text></g>`;
+  
+  out+=`</g>`;
+  
+  if(shapes.cap){
+    const ly={fat:118,tall:86}[brewState.cup]??0;
+    out+=`<path d="M52 ${ly+4} L168 ${ly+4} L166 ${ly+14} L54 ${ly+14} Z" fill="#FFD9A8" stroke="#4E3B2F" stroke-width="3.5" stroke-linejoin="round"/>`;
+  }
+  shapes.straw.forEach((st,i)=>{
+    const sx=st.x,sy=st.y;
+    out+=`<g transform="rotate(${st.rot} ${sx} ${sy})"><rect x="${sx-4}" y="${sy}" width="8" height="${st.len}" rx="4" fill="#F2573A" stroke="#4E3B2F" stroke-width="2.5"/><path d="M${sx-4} ${sy+st.len-10} h8" stroke="#fff" stroke-width="2" opacity=".55"/></g>`;
+  });
+  shapes.bob.forEach((st,i)=>{
+    out+=`<g transform="rotate(${st.rot} ${st.x} ${st.y})"><rect x="${st.x-3.5}" y="${st.y}" width="7" height="${st.len}" rx="3.5" fill="#F2573A" stroke="#4E3B2F" stroke-width="2"/></g>`;
+  });
+  if(shapes.face){
+    out+=`<g stroke="#4E3B2F" stroke-width="3" fill="#fff"><circle cx="92" cy="218" r="9"/><circle cx="136" cy="218" r="9"/></g>`;
+    out+=`<g fill="#4E3B2F"><circle cx="90" cy="216" r="3"/><circle cx="134" cy="216" r="3"/></g>`;
+    out+=`<circle cx="78" cy="228" r="5" fill="#FF9EC4" opacity=".8"/><circle cx="150" cy="228" r="5" fill="#FF9EC4" opacity=".8"/>`;
+    out+=`<path d="M106 224 Q114 233 122 224" fill="none" stroke="#4E3B2F" stroke-width="3.5" stroke-linecap="round"/>`;
+  }
+  out+=`<path d="${shapes.o}" fill="none" stroke="#4E3B2F" stroke-width="4.5" stroke-linejoin="round"/>`;
+  out+=`<circle cx="48" cy="40" r="7" fill="#fff" opacity=".7"/><circle cx="176" cy="66" r="5" fill="#fff" opacity=".5"/>`;
+  out+=`<circle cx="40" cy="60" r="3.4" fill="#fff" opacity=".55"/><circle cx="182" cy="120" r="4" fill="#fff" opacity=".45"/>`;
+  
+  return {svg:`<svg class="cup" viewBox="0 0 ${W} ${H}" id="${id}svg">${out}</svg>`,id,fid:id+'fill',totalH:liquidHeight};
+}
+function drawTopping(tp,x,y0,h,seed,pos){
+  let s='';
+  const count=pos==='bottom'?Math.max(2,Math.floor(h/5)):3;
+  const spread=pos==='bottom'?h*0.6:12;
+  for(let i=0;i<count;i++){
+    const px=x+(i-count/2)*spread/count+((i*7)%5-2)*3;
+    const py=y0+h/2+((i*13)%7-3)*2;
+    const sz=pos==='bottom'?h*0.5:8;
+    if(tp.k==='pearl'||tp.k==='redbean'||tp.k==='boba')
+      s+=`<circle cx="${px}" cy="${py}" r="${sz}" fill="${tp.c}" stroke="#4E3B2F" stroke-width="1.6" opacity=".96"/>`;
+    else if(tp.k==='taro')
+      s+=`<circle cx="${px}" cy="${py}" r="${sz*0.9}" fill="${tp.c}" stroke="#4E3B2F" stroke-width="1.6"/><path d="M${px-3} ${py} q3 -3 6 0" stroke="#fff" stroke-width="1.4" fill="none"/>`;
+    else if(tp.k==='coco')
+      s+=`<rect x="${px-3}" y="${py-3}" width="${sz*0.8}" height="${sz*0.8}" rx="1.5" fill="${tp.c}" stroke="#D8C49A" stroke-width="1.3" transform="rotate(${(i*17)%40} ${px} ${py})"/>`;
+    else if(tp.k==='pudding')
+      s+=`<rect x="${px-4}" y="${py-3}" width="7" height="${sz*0.9}" rx="3" fill="${tp.c}" stroke="#D9A53E" stroke-width="1.4" opacity=".95"/>`;
+    else if(tp.k==='sago')
+      s+=`<circle cx="${px}" cy="${py}" r="${sz*0.6}" fill="${tp.c}" stroke="#D9CFC0" stroke-width="1.3" opacity=".9"/>`;
+  }
+  return `<g opacity="1">${s}</g>`;
+}
+function lighten(hex){const n=parseInt(hex.slice(1),16);const r=(n>>16)+60,g=((n>>8)&255)+60,b=(n&255)+60;
+  return `#${[r,g,b].map(v=>Math.min(255,v).toString(16).padStart(2,'0')).join('')}`}
+function darken(hex){const n=parseInt(hex.slice(1),16);const r=(n>>16)-30,g=((n>>8)&255)-30,b=(n&255)-30;
+  return `#${[r,g,b].map(v=>Math.max(0,Math.min(255,v)).toString(16).padStart(2,'0')).join('')}`}
+function updateStage(insta){
+  const cup=cupByKey(brewState.cup);
+  const r=cupSVG();
+  $('cupStage').innerHTML=r.svg;
+  $('brewMsg').textContent=`${cup.n} · 已选 ${brewState.tops.length?brewState.tops.map(k=>TOPPINGS.find(t=>t.k===k).n).join('/'):'没加小料'} ${brewState.fruits.length?'+ '+brewState.fruits.map(k=>FRUITS.find(f=>f.k===k).n).join('/'):''} ${SUGAR.find(s=>s.k===brewState.sugar).n} ${ICE.find(s=>s.k===brewState.ice).n}`;
+  if(insta){const f=document.getElementById(r.fid);if(f)f.style.transform=`translate(0,0px)`}
+  else animateFill(r.id,r.fid,r.totalH);
+}
+function animateFill(sid,fid,totalH){
+  const f=document.getElementById(fid);if(!f)return;
+  const t0=performance.now(),dur=1000;
+  function frame(t){
+    const p=Math.min(1,(t-t0)/dur);
+    const ease=1-Math.pow(1-p,3);
+    const curH=totalH*ease;
+    f.style.transform=`translate(0,${totalH-curH}px)`;
+    if(p<1)requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ---------- 摇晃杯子 ---------- */
+let shakeTimer=null;
+function shakeCup(){
+  const svg=document.querySelector('#cupStage svg');
+  if(!svg)return;
+  svg.style.transition='transform .08s';
+  svg.style.transform='rotate(-4deg) scale(1.02)';
+  clearTimeout(shakeTimer);
+  shakeTimer=setTimeout(()=>{
+    svg.style.transform='rotate(3deg) scale(0.98)';
+    setTimeout(()=>{
+      svg.style.transform='rotate(-2deg)';
+      setTimeout(()=>{
+        svg.style.transform='';
+      },80);
+    },80);
+  },80);
+}
+
+/* ---------- 随机搭配 ---------- */
+function randomBrew(){
+  brewState.cup=randomItem(CUPS).k;
+  brewState.tea=randomItem(TEAS).k;
+  const availTops=TOPPINGS.filter(t=>!t.top);
+  const num=Math.floor(Math.random()*3)+1;
+  const shuffled=availTops.sort(()=>Math.random()-0.5);
+  brewState.tops=shuffled.slice(0,Math.min(num,3)).map(t=>t.k);
+  if(Math.random()>0.7) brewState.tops.push('cream');
+  const availFruits=FRUITS.sort(()=>Math.random()-0.5);
+  brewState.fruits=availFruits.slice(0,Math.floor(Math.random()*3)).map(f=>f.k);
+  brewState.sugar=randomItem(SUGAR).k;
+  brewState.ice=randomItem(ICE).k;
+  renderGame();
+  $('brewMsg').textContent='✨ 随机搭配完成! 点击开始制作吧~';
+  toast('🎲 已随机选好配料!');
+}
+
+/* ================== 制作 & 出杯 ================== */
+function genName(){
+  const fruitNs=brewState.fruits.map(k=>FRUITS.find(f=>f.k===k).n);
+  const topNs=brewState.tops.map(k=>TOPPINGS.find(t=>t.k===k).n);
+  const style=randomItem(['啵啵','小满','满杯','快乐','元气','多肉','手作','云朵','宝藏','快乐星球','芋见','莓有烦恼','柠好','桃桃','萄气','椰椰']);
+  const pick=randomItem([...(fruitNs.length?fruitNs:[]),...(topNs.length?topNs:[]),'奶绿','奶茶']);
+  const end=randomItem(['','大满贯','小确幸','研究所','の特调','加冰不加价','去冰去烦恼','多料多快乐']);
+  return (style)+(pick||'茶')+(end||'');
+}
+
+function brew(){
+  if(brewState.tops.length>3||brewState.fruits.length>2)return;
+  updateStage(false);
+  $('brewMsg').textContent='咕嘟咕嘟… 小料正在落杯里 ✨';
+  const stage=$('stageArea');
+  for(let i=0;i<10;i++){
+    setTimeout(()=>{
+      const b=document.createElement('div');
+      b.className='bubble';
+      const size=10+Math.random()*20;
+      b.style.width=size+'px';
+      b.style.height=size+'px';
+      b.style.left=(15+Math.random()*70)+'%';
+      b.style.bottom='20px';
+      b.style.animationDuration=(1+Math.random()*1.5)+'s';
+      stage.appendChild(b);
+      setTimeout(()=>b.remove(),2500);
+    },i*120);
+  }
+  const gEl=document.querySelector('#cupStage svg');
+  if(gEl)gEl.style.transform='scale(.95)';
+  setTimeout(()=>{if(gEl)gEl.style.transform=''},300);
+  const sim=bestMatch();
+  const beauty=Math.min(99,62+brewState.fruits.length*9+Math.min(brewState.tops.length,3)*5+(brewState.tea==='matcha'||brewState.tea==='coconut'?4:0)+(brewState.cup==='glass'||brewState.cup==='tall'?3:0)+Math.floor(Math.random()*7));
+  const tasty=Math.min(99,60+brewState.tops.length*7+brewState.fruits.length*6+(sim.pct>=60?sim.pct*0.2:0)+Math.floor(Math.random()*7));
+  setTimeout(()=>{
+    const name=genName();
+    lastResult={name,beauty,tasty,sim,state:{...brewState}};
+    showResult(name,beauty,tasty,sim,brewState);
+    saveBrew(name,Math.round((beauty+tasty)/2),sim.pct);
+    $('brewMsg').textContent='哇!出杯啦 🎉';
+  },1200);
+}
+function bestMatch(){
+  let best=null;
+  RECIPES.forEach(r=>{
+    let score=0,total=0;
+    const eq=(a,b)=>a.length===b.length&&a.every(x=>b.includes(x));
+    score+= (r.cup===brewState.cup)?1:0; total++;
+    score+= (r.tea===brewState.tea)?1:0; total++;
+    score+= eq(r.tops,brewState.tops)?1:0; total++;
+    score+= eq(r.fruits,brewState.fruits)?1:0; total++;
+    score+= (r.sugar===brewState.sugar)?0.5:0; total+=0.5;
+    score+= (r.ice===brewState.ice)?0.5:0; total+=0.5;
+    const p=score/total*100;
+    if(!best||p>best.pct)best={n:r.n,pct:p};
+  });
+  return best;
+}
+function showResult(name,beauty,tasty,sim,st){
+  $('rName').textContent=name;
+  const cupE=CUPS.find(c=>c.k===st.cup).e;
+  $('rCupPreview').innerHTML=cupPreview(st);
+  const sub=[];
+  if(sim.pct>=60&&RECIPES.some(r=>r.n===sim.n))sub.push(`和配方书里的「${sim.n}」复刻度 ${Math.round(sim.pct)}%`);
+  if(sim.pct>=88)sub.push('这杯几乎可以开店了!');
+  else if(beauty>=85)sub.push('颜值爆表,先拍照再喝!');
+  else sub.push('自己调的就是最好喝的~');
+  $('rSub').textContent=sub.join(' · ');
+  const sbar=(label,v,stops)=>{const col=v>=78?'linear-gradient(90deg,#FFD166,#FF9EC4)':v>=55?'linear-gradient(90deg,#7CC9F2,#6FD3A0)':'linear-gradient(90deg,#B5AEA4,#FFB084)';
+    return `<div class="gbar"><span>${label}</span><div class="grow"><i style="width:0%;background:${col}"></i></div><span class="num">${v}</span></div>`};
+  $('rGaugeWrap').innerHTML=sbar('🍬 颜值',beauty)+sbar('😋 美味',tasty);
+  const ga=$('rGaugeWrap');
+  requestAnimationFrame(()=>{requestAnimationFrame(()=>{const bars=ga.querySelectorAll('.grow i');
+    if(bars[0])bars[0].style.width=beauty+'%';if(bars[1])bars[1].style.width=tasty+'%';})});
+  // 原创或复刻提示 — 完整显示
+  if (sim.pct >= 60 && RECIPES.some(r => r.n === sim.n)) {
+    $('rRec').innerHTML = `<span class="chip" style="background:var(--sun)">📖 已复刻经典配方「${sim.n}」${Math.round(sim.pct)}%</span>`;
+  } else {
+    $('rRec').textContent = '✨ 这是一杯原创特调！可以加进配方书灵感哦 ✨';
+  }
+  const comps=[cupE+CUPS.find(c=>c.k===st.cup).n,TEAS.find(t=>t.k===st.tea).e+TEAS.find(t=>t.k===st.tea).n,
+    ...st.tops.map(k=>TOPPINGS.find(t=>t.k===k).n),...st.fruits.map(k=>FRUITS.find(f=>f.k===k).n),
+    SUGAR.find(s=>s.k===st.sugar).n,ICE.find(s=>s.k===st.ice).n];
+  $('rComps').innerHTML=comps.map(c=>`<span class="chip">${c}</span>`).join('');
+  openOv('ovResult');
+  if(sim.pct>=88)confettiRain();
+}
+function shareResult(){
+  if(!lastResult)return;
+  const {name,beauty,tasty,sim,state}=lastResult;
+  const text=`🧋 我刚刚做了一杯「${name}」！\n颜值 ${beauty} 分，美味 ${tasty} 分${sim.pct>=60?`，复刻了「${sim.n}」${Math.round(sim.pct)}%`:'，是一杯原创特调！'}\n配料：${state.tops.map(k=>TOPPINGS.find(t=>t.k===k).n).join('、')||'无'} ${state.fruits.map(k=>FRUITS.find(f=>f.k===k).n).join('、')||''}\n快来啵啵奶茶工坊做一杯吧！`;
+  navigator.clipboard.writeText(text).then(()=>toast('📋 文案已复制，快去分享吧！')).catch(()=>toast('复制失败，请手动复制'));
+}
+function confettiRain(){
+  const box=$('confetti');box.innerHTML='';
+  const es=['🧋','✨','⭐','🍓','💛','🧊'];
+  for(let i=0;i<24;i++){
+    const s=document.createElement('i');s.textContent=randomItem(es);
+    s.style.left=Math.random()*100+'%';
+    s.style.animationDuration=(1.6+Math.random()*1.6)+'s';
+    s.style.fontSize=(14+Math.random()*16)+'px';
+    box.appendChild(s);
+    setTimeout(()=>s.remove(),3400);
+  }
+}
+function saveBrew(name,score){
+  const favs=[CUPS.find(c=>c.k===brewState.cup).e,...brewState.tops.map(k=>TOPPINGS.find(t=>t.k===k).e),...brewState.fruits.map(k=>FRUITS.find(f=>f.k===k).e)].join('');
+  brews.push({name,score,favs,cup:brewState.cup,tea:brewState.tea,tops:[...brewState.tops],fruits:[...brewState.fruits],sugar:brewState.sugar,ice:brewState.ice,ts:Date.now()});
+  if(brews.length>60)brews=brews.slice(-60);
+  save();renderAlbum();renderCommunity();
+}
+
+/* ================== 弹窗通用 ================== */
+function openOv(id){$(id).classList.add('on')}
+function closeOv(id){$(id).classList.remove('on')}
+document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('on')}));
+
+/* ================== 初始化 ================== */
+load();
+renderGame();
+renderCommunity();
+</script>
+</body>
+</html>
